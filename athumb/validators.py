@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.core.validators import ValidationError
+from django.utils.deconstruct import deconstructible
 
 # A list of allowable thumbnail file extensions.
 ALLOWABLE_THUMBNAIL_EXTENSIONS = getattr(
     settings, 'ALLOWABLE_THUMBNAIL_EXTENSIONS', ['png', 'jpg', 'jpeg', 'gif'])
 
+@deconstructible
 class ImageUploadExtensionValidator(object):
     """
     Perform some basic image uploading extension validation.
@@ -13,11 +15,8 @@ class ImageUploadExtensionValidator(object):
     clean   = lambda self, x: x
 
 
-    def deconstruct(self):
-        path = "athumb.validators.ImageUploadExtensionValidator"
-        args = []
-        kwargs = {}
-        return (path, args, kwargs)
+    def __init__(self, *args, **kwargs):
+        super(ImageUploadExtensionValidator, self).__init__(*args, **kwargs)
 
 
     def __call__(self, value):
