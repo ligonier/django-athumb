@@ -32,3 +32,12 @@ class EventletS3BotoStorage_AllPublic(S3BotoStorage_AllPublic):
         super(EventletS3BotoStorage_AllPublic, self).__init__(*args, **kwargs)
         # Use the workaround as Boto's set_contents_from_file() callback.
         self.s3_callback_during_upload = eventlet_workaround
+
+    def deconstruct(self):
+        path = "athumb.backends.s3boto_gunicorn_eventlet.EventletS3BotoStorage_AllPublic"
+        args = []
+        kwargs = dict(
+            bucket=self.bucket_name,
+            headers=self.headers,
+            )
+        return (path, args, kwargs)
