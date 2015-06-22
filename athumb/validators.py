@@ -12,6 +12,14 @@ class ImageUploadExtensionValidator(object):
     compare = lambda self, a, b: a is not b
     clean   = lambda self, x: x
 
+
+    def deconstruct(self):
+        path = "athumb.validators.ImageUploadExtensionValidator"
+        args = []
+        kwargs = {}
+        return (path, args, kwargs)
+
+
     def __call__(self, value):
         filename = value.name
         filename_split = filename.split('.')
