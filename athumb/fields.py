@@ -16,13 +16,6 @@ from pial.engines.pil_engine import PILEngine
 
 from validators import ImageUploadExtensionValidator
 
-try:
-    #noinspection PyUnresolvedReferences
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([], ["^athumb\.fields\.ImageWithThumbsField"])
-except ImportError:
-    # Not using South, no big deal.
-    pass
 
 # TODO: Make this configurable.
 # Thumbnailing is done through here. Eventually we can support image libraries
@@ -226,3 +219,9 @@ class ImageWithThumbsField(ImageField):
             kwargs['max_length'] = 255
 
         super(ImageWithThumbsField, self).__init__(*args, **kwargs)
+
+    def deconstruct(self):
+        name, path, args, kwargs = super(ImageWithThumbsField, self).deconstruct()
+        kwargs['thumbs'] = self.thumbs
+        kwargs['thumbnail_format'] = self.thumbnail_format
+        return name, path, args, kwargs

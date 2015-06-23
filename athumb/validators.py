@@ -18,6 +18,8 @@ class ImageUploadExtensionValidator(object):
     def __init__(self, *args, **kwargs):
         super(ImageUploadExtensionValidator, self).__init__(*args, **kwargs)
 
+    def __eq__(self, other):
+        return True  # No internal state, so all ImageUploadExtensionValidator objects are equal
 
     def __call__(self, value):
         filename = value.name
