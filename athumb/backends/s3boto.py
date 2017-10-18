@@ -265,11 +265,11 @@ class S3BotoStorage_AllPublic(S3BotoStorage):
         name = urllib.quote_plus(self._clean_name(name), safe='/')
 
         if self.bucket_cname:
-            return "http://%s/%s" % (self.bucket_cname, name)
+            return "//%s/%s" % (self.bucket_cname, name)
         elif self.host:
-            return "http://%s/%s/%s" % (self.host, self.bucket_name, name)
+            return "//%s/%s/%s" % (self.host, self.bucket_name, name)
         # No host ? Then it's the default region
-        return "http://s3.amazonaws.com/%s/%s" % (self.bucket_name, name)
+        return "//s3.amazonaws.com/%s/%s" % (self.bucket_name, name)
 
 
 class S3BotoStorageFile(File):
