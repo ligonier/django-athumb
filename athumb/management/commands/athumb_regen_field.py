@@ -7,30 +7,27 @@ class Command(BaseCommand):
     args = '<app.model> <field>'
     help = 'Re-generates thumbnails for all instances of the given model, for the given field.'
 
+    def add_arguments(self, parser):
+        parser.add_argument('model_name', nargs=1, help='The model, such as "learn.Series"')
+        parser.add_argument('field_name', nargs=1, help='The field name, such as "image"')
+
     def handle(self, *args, **options):
-        self.args = args
-        self.options = options
+        self.model_name = options['model_name'][0]
+        self.field_name = options['field_name'][0]
 
         self.validate_input()
         self.parse_input()
         self.regenerate_thumbs()
 
     def validate_input(self):
-        num_args = len(self.args)
-
-        if num_args < 2:
-            raise CommandError("Please pass the app.model and the field to generate thumbnails for.")
-        if num_args > 2:
-            raise CommandError("Too many arguments provided.")
-
-        if '.' not in self.args[0]:
+        if '.' not in self.model_name:
             raise CommandError("The first argument must be in the format of: app.model")
 
     def parse_input(self):
         """
         Go through the user input, get/validate some important values.
         """
-        app_split = self.args[0].split('.')
+        app_split = self.model_name.split('.')
         app = app_split[0]
         model_name = app_split[1].lower()
 
@@ -38,10 +35,10 @@ class Command(BaseCommand):
             self.model = ContentType.objects.get(app_label=app, model=model_name)
             self.model = self.model.model_class()
         except ContentType.DoesNotExist:
-            raise CommandError("There is no app/model combination: %s" % self.args[0])
+            raise CommandError("There is no app/model combination: %s" % self.model_name)
 
         # String field name to re-generate.
-        self.field = self.args[1]
+        self.field = self.field_name
 
     def regenerate_thumbs(self):
         """
