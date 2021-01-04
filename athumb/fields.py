@@ -14,7 +14,7 @@ from django.core.files.base import ContentFile
 from athumb.exceptions import UploadedImageIsUnreadableError
 from pial.engines.pil_engine import PILEngine
 
-from validators import ImageUploadExtensionValidator
+from .validators import ImageUploadExtensionValidator
 
 
 # TODO: Make this configurable.
@@ -212,10 +212,10 @@ class ImageWithThumbsField(ImageField):
         self.thumbs = kwargs.pop('thumbs', ())
         self.thumbnail_format = kwargs.pop('thumbnail_format', None)
 
-        if not kwargs.has_key('validators'):
+        if 'validators' not in kwargs:
             kwargs['validators'] = [IMAGE_EXTENSION_VALIDATOR]
 
-        if not kwargs.has_key('max_length'):
+        if 'max_length' not in kwargs:
             kwargs['max_length'] = 255
 
         super(ImageWithThumbsField, self).__init__(*args, **kwargs)

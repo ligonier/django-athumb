@@ -65,7 +65,7 @@ class Command(BaseCommand):
 
             file_name = os.path.basename(file.name)
 
-            if regen_tracker.has_key(file_name):
+            if file_name in regen_tracker:
                 print "(%d/%d) ID: %d -- Skipped -- Already re-genned %s" % (
                                                     counter,
                                                     num_instances,
@@ -107,7 +107,7 @@ class Command(BaseCommand):
 
             try:
                 file.generate_thumbs(file_name, file_contents)
-            except IOError, e:
+            except IOError as e:
                 print "(%d/%d) ID %d --  Error -- Image may be corrupt)" % (
                     counter,
                     num_instances,
