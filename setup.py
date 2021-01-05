@@ -1,5 +1,5 @@
 from distutils.core import setup
-import athumb
+from . import athumb
 
 long_description = open('README.rst').read()
 

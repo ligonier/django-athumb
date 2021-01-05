@@ -10,10 +10,8 @@ Mikko Hellsing, Chris Beaven.
 Modifications and new ideas, Copyright (c) 2010, DUO Interactive, LLC.
 """
 import re
-import math
 from django.template import Library, Node, Variable, VariableDoesNotExist, TemplateSyntaxError
 from django.conf import settings
-from django.utils.encoding import force_unicode
 
 register = Library()
 
@@ -108,8 +106,8 @@ class ThumbnailNode(Node):
                 except:
                     #import traceback
                     #traceback.print_stack()
-                    print "ERROR: Using {% thumbnail %} tag with "\
-                          "a regular ImageField instead of ImageWithThumbsField:", self.source_var
+                    print("ERROR: Using {% thumbnail %} tag with "\
+                          "a regular ImageField instead of ImageWithThumbsField:", self.source_var)
                     return ''
             except ValueError:
                 # This file object doesn't actually have a file. Probably
@@ -183,7 +181,7 @@ def thumbnail(parser, token):
     size_var = args[2]
 
     # Get the options.
-    args_list = split_args(args[3:]).items()
+    args_list = list(split_args(args[3:]).items())
 
     # Check the options.
     opts = {}

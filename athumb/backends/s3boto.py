@@ -2,7 +2,7 @@
 Incorporated from django-storages, copyright all of those listed in:
 http://code.welldev.org/django-storages/src/tip/AUTHORS
 """
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import os
 import mimetypes
 import re
@@ -259,7 +259,7 @@ class S3BotoStorage_AllPublic(S3BotoStorage):
         Since we assume all public storage with no authorization keys, we can
         just simply dump out a URL rather than having to query S3 for new keys.
         """
-        name = urllib.quote_plus(self._clean_name(name), safe='/')
+        name = urllib.parse.quote_plus(self._clean_name(name), safe='/')
 
         if self.bucket_cname:
             return "https://%s/%s" % (self.bucket_cname, name)
