@@ -254,7 +254,6 @@ class S3BotoStorage_AllPublic(S3BotoStorage):
     def __init__(self, *args, **kwargs):
         super(S3BotoStorage_AllPublic, self).__init__(acl='public-read',
                                                       querystring_auth=False,
-                                                      force_no_ssl=True,
                                                       *args, **kwargs)
 
     def url(self, name):
