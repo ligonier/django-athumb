@@ -52,7 +52,7 @@ class EventletFileSystemStorage(FileSystemStorage):
                     finally:
                         locks.unlock(fd)
                         os.close(fd)
-            except OSError, e:
+            except OSError as e:
                 if e.errno == errno.EEXIST:
                     # Ooops, the file exists. We need a new file name.
                     name = self.get_available_name(name)

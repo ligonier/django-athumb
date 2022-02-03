@@ -3,7 +3,7 @@
 Fields, FieldFiles, and Validators.
 """
 import os
-import cStringIO
+import io
 
 from PIL import Image
 from django.db.models import ImageField
@@ -14,7 +14,7 @@ from django.core.files.base import ContentFile
 from athumb.exceptions import UploadedImageIsUnreadableError
 from pial.engines.pil_engine import PILEngine
 
-from validators import ImageUploadExtensionValidator
+from .validators import ImageUploadExtensionValidator
 
 
 # TODO: Make this configurable.
@@ -104,7 +104,7 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
         super(ImageWithThumbsFieldFile, self).save(name, content, save)
         try:
             self.generate_thumbs(name, content)
-        except IOError, exc:
+        except IOError as exc:
             if 'cannot identify' in exc.message or \
                'bad EPS header' in exc.message:
                 raise UploadedImageIsUnreadableError(
@@ -177,7 +177,7 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
         # TODO: Avoiding hitting the disk here, but perhaps we should use temp
         # files down the road? Big images might choke us as we do part in
         # RAM then hit swap.
-        img_fobj = cStringIO.StringIO()
+        img_fobj = io.StringIO()
         # This writes the thumbnailed PIL.Image to the file-like object.
         THUMBNAIL_ENGINE.write(thumbed_image, img_fobj, format=file_extension)
         # Save the result to the storage backend.
@@ -212,10 +212,10 @@ class ImageWithThumbsField(ImageField):
         self.thumbs = kwargs.pop('thumbs', ())
         self.thumbnail_format = kwargs.pop('thumbnail_format', None)
 
-        if not kwargs.has_key('validators'):
+        if 'validators' not in kwargs:
             kwargs['validators'] = [IMAGE_EXTENSION_VALIDATOR]
 
-        if not kwargs.has_key('max_length'):
+        if 'max_length' not in kwargs:
             kwargs['max_length'] = 255
 
         super(ImageWithThumbsField, self).__init__(*args, **kwargs)

@@ -57,26 +57,26 @@ class Command(BaseCommand):
         for instance in instances:
             file = getattr(instance, self.field)
             if not file:
-                print "(%d/%d) ID: %d -- Skipped -- No file" % (counter,
+                print("(%d/%d) ID: %d -- Skipped -- No file" % (counter,
                                                                 num_instances,
-                                                                instance.id)
+                                                                instance.id))
                 counter += 1
                 continue
 
             file_name = os.path.basename(file.name)
 
-            if regen_tracker.has_key(file_name):
-                print "(%d/%d) ID: %d -- Skipped -- Already re-genned %s" % (
+            if file_name in regen_tracker:
+                print("(%d/%d) ID: %d -- Skipped -- Already re-genned %s" % (
                                                     counter,
                                                     num_instances,
                                                     instance.id,
-                                                    file_name)
+                                                    file_name))
                 counter += 1
                 continue
 
             # Keep them informed on the progress.
-            print "(%d/%d) ID: %d -- %s" % (counter, num_instances,
-                                            instance.id, file_name)
+            print("(%d/%d) ID: %d -- %s" % (counter, num_instances,
+                                            instance.id, file_name))
 
             try:
                 fdat = file.read()
@@ -84,10 +84,10 @@ class Command(BaseCommand):
                 del file.file
             except IOError:
                 # Key didn't exist.
-                print "(%d/%d) ID %d -- Error -- File missing on S3" % (
+                print("(%d/%d) ID %d -- Error -- File missing on S3" % (
                                                               counter,
                                                               num_instances,
-                                                              instance.id)
+                                                              instance.id))
                 counter += 1
                 continue
 
@@ -95,10 +95,10 @@ class Command(BaseCommand):
                 file_contents = ContentFile(fdat)
             except ValueError:
                 # This field has no file associated with it, skip it.
-                print "(%d/%d) ID %d --  Skipped -- No file on field)" % (
+                print("(%d/%d) ID %d --  Skipped -- No file on field)" % (
                                                               counter,
                                                               num_instances,
-                                                              instance.id)
+                                                              instance.id))
                 counter += 1
                 continue
 
@@ -107,11 +107,11 @@ class Command(BaseCommand):
 
             try:
                 file.generate_thumbs(file_name, file_contents)
-            except IOError, e:
-                print "(%d/%d) ID %d --  Error -- Image may be corrupt)" % (
+            except IOError as e:
+                print("(%d/%d) ID %d --  Error -- Image may be corrupt)" % (
                     counter,
                     num_instances,
-                    instance.id)
+                    instance.id))
                 counter += 1
                 continue
 
