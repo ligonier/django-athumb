@@ -7,7 +7,7 @@ import os
 import mimetypes
 import re
 
-from io import StringIO
+from io import BytesIO
 
 from django.conf import settings
 from django.core.files.base import File
@@ -139,7 +139,7 @@ class S3BotoStorage(Storage):
 
     def _compress_content(self, content):
         """Gzip a given string."""
-        zbuf = StringIO()
+        zbuf = BytesIO()
         zfile = GzipFile(mode='wb', compresslevel=6, fileobj=zbuf)
         zfile.write(content.read())
         zfile.close()
@@ -275,7 +275,7 @@ class S3BotoStorageFile(File):
         self._mode = mode
         self.key = storage.bucket.get_key(name)
         self._is_dirty = False
-        self.file = StringIO()
+        self.file = BytesIO()
 
     @property
     def size(self):
@@ -284,7 +284,7 @@ class S3BotoStorageFile(File):
         return self.key.size
 
     def read(self, *args, **kwargs):
-        self.file = StringIO()
+        self.file = BytesIO()
         self._is_dirty = False
         if not self.key:
             raise IOError('No such S3 key: %s' % self.name)
@@ -294,7 +294,7 @@ class S3BotoStorageFile(File):
     def write(self, content):
         if 'w' not in self._mode:
             raise AttributeError("File was opened for read-only access.")
-        self.file = StringIO(content)
+        self.file = BytesIO(content)
         self._is_dirty = True
 
     def close(self):

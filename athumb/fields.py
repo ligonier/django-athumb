@@ -177,7 +177,7 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
         # TODO: Avoiding hitting the disk here, but perhaps we should use temp
         # files down the road? Big images might choke us as we do part in
         # RAM then hit swap.
-        img_fobj = io.StringIO()
+        img_fobj = io.BytesIO()
         # This writes the thumbnailed PIL.Image to the file-like object.
         THUMBNAIL_ENGINE.write(thumbed_image, img_fobj, format=file_extension)
         # Save the result to the storage backend.
