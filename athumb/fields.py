@@ -158,13 +158,14 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
 
         thumb_filename = self._calc_thumb_filename(thumb_name)
         file_extension = self.get_thumbnail_format()
+        pil_format = "jpeg" if file_extension == "jpg" else file_extension
 
         image = self._create_thumbnail(
             image, size, crop_option=crop_option, upscale=upscale
         )
 
         with io.BytesIO() as thumbnail:
-            image.save(thumbnail, format=file_extension)
+            image.save(thumbnail, format=pil_format)
             thumb_content = ContentFile(thumbnail.getvalue())
             self.storage.save(thumb_filename, thumb_content)
 
