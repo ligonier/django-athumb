@@ -205,7 +205,7 @@ class ImageWithThumbsField(ImageField):
 
     def __init__(self, *args, **kwargs):
         self.thumbs = kwargs.pop("thumbs", ())
-        self.thumbnail_format = kwargs.pop("thumbnail_format", "JPEG")
+        self.thumbnail_format = kwargs.pop("thumbnail_format", None)
 
         if "validators" not in kwargs:
             kwargs["validators"] = [IMAGE_EXTENSION_VALIDATOR]
