@@ -86,8 +86,18 @@ Add to ``TEMPLATE_CONTEXT_PROCESSORS`` in ``settings.py``::
 If you want S3 storage as your default file back-end::
 
     # If you don't want this to be the global default, just make sure you
-    # specify the S3BotoStorage_AllPublic backend on a per-field basis.
-    DEFAULT_FILE_STORAGE = 'athumb.backends.s3boto.S3BotoStorage_AllPublic'
+    # specify the storages.backends.s3.S3Storage backend on a per-field basis.
+
+    STORAGES = {  # Django >= 4.2
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+              ...your_options_here
+            },
+        },
+    }
+
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'  # Django < 4.2
 
 Then setup some values used by the backend::
 

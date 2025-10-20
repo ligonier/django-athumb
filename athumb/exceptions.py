@@ -1,6 +1,8 @@
 """
 Some top-level exceptions that are generally useful.
 """
+
+
 class UploadedImageIsUnreadableError(Exception):
     """
     Raise this when the image generation backend can't read the image being
@@ -8,4 +10,13 @@ class UploadedImageIsUnreadableError(Exception):
     mal-formed or corrupt, but the imaging library (as it is compiled) can't
     read it.
     """
+
+    pass
+
+
+class ThumbnailError(Exception):
+    pass
+
+
+class ThumbnailParseError(ThumbnailError):
     pass

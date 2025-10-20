@@ -8,3 +8,5 @@ MANIFEST
 build
 dist
 .idea
+/django_athumb.egg-info/
+.DS_Store
